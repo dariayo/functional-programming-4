@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - DOCKER_ENDPOINT=http://docker:2375
+    depends_on:
+      - docker
+
+  docker:
+    image: docker:20.10-dind
+    privileged: true
+    volumes:
+      - /var/lib/docker
