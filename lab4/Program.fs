@@ -4,12 +4,22 @@ open System
 open System.IO
 open LogCollector.Parser
 open ReportGenerator.MarkdownReport
+open UserInterface.WebApp
+open Microsoft.AspNetCore.Builder
+
 
 [<EntryPoint>]
 let main args =
     if args.Length < 3 then
-        printfn "Usage: dotnet run <container_name> <logs_path> <reports_path>"
-        1
+        let builder = WebApplication.CreateBuilder(args)
+        configureServices builder
+
+        let app = builder.Build()
+        configureApp app
+
+        app.Run()
+        0
+
     else
         let containerName = args.[0]
         let logsPath = args.[1]

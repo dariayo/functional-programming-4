@@ -1,4 +1,4 @@
-# Лабораторная работа № 4
+# Lab № 4
 
 ## Log collector for microservices and parsing to reports *.md
 
