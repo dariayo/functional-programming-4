@@ -20,8 +20,8 @@ let parseLog (log: string) =
 
     if matchResult.Success then
         Some
-            { Timestamp = DateTime.Now // Логи без метки времени, поэтому используем текущую дату.
-              LogLevel = matchResult.Groups.["level"].Value.ToUpper() // Преобразование уровня в верхний регистр.
+            { Timestamp = DateTime.Now 
+              LogLevel = matchResult.Groups.["level"].Value.ToUpper() 
               Message = matchResult.Groups.["message"].Value
               Source = matchResult.Groups.["source"].Value.Trim() }
     else

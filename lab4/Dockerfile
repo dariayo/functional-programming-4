@@ -13,6 +13,8 @@ WORKDIR /app
 
 COPY --from=build /app/out .
 
+COPY --from=build /app/UserInterface/Static ./Static
+
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "lab4.dll"]

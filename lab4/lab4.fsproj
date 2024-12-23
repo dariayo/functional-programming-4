@@ -22,8 +22,8 @@
     <Compile Include="ReportGenerator/MarkdownReport.fs" />
     <Compile Include="UserInterface/LogViews.fs" />
     <Compile Include="UserInterface/ReportsViews.fs" />
-    <Compile Include="UserInterface/WebApp.fs" />
     <Compile Include="UserInterface/API.fs" />
+    <Compile Include="UserInterface/WebApp.fs" />
     <Compile Include="Utils/DockerHelper.fs" />
     <Compile Include="Utils/LogFormatter.fs" />
     <Compile Include="Utils/Config.fs" />

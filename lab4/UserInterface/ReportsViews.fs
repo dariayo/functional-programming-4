@@ -9,6 +9,7 @@ let indexPage =
         ]
         body [] [
             h1 [] [ str "Reports" ]
-            p [] [ str "Здесь будут отображаться отчёты." ]
+            div [ _id "reports" ] []
+            script [ _src "/static/js/scripts.js" ] []
         ]
     ]

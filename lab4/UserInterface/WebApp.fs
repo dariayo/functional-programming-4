@@ -6,22 +6,21 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open System.IO
 open Microsoft.Extensions.FileProviders
-
+open UserInterface.API
 
 let webApp =
     choose [ route "/"
              >=> text "Welcome to the Log Collector Dashboard!"
-             route "/logs" >=> htmlView LogsView.indexPage
-             route "/reports"
-             >=> htmlView ReportsView.indexPage ]
+             route "/logs" >=> htmlFile "Static/html/logs.html"
+             route "/reports" >=> htmlFile "Static/html/reports.html"
+             subRoute "/api" (apiRoutes ()) ]
 
-let configureServices (builder: WebApplicationBuilder) = builder.Services.AddGiraffe() |> ignore
+let configureServices (builder: WebApplicationBuilder) =
+    builder.Services.AddGiraffe() |> ignore
 
 let configureApp (app: WebApplication) =
     let staticPath =
-        Path.Combine(Directory.GetCurrentDirectory(), "UserInterface", "Static")
-
-    printfn "Looking for static files in: %s" staticPath
+        Path.Combine(Directory.GetCurrentDirectory(), "Static")
 
     if not (Directory.Exists(staticPath)) then
         printfn "Directory not found: %s" staticPath
@@ -29,6 +28,10 @@ let configureApp (app: WebApplication) =
         printfn "Serving static files from: %s" staticPath
 
     app
-        .UseStaticFiles()
-        .UseFileServer(FileServerOptions(FileProvider = new PhysicalFileProvider(staticPath)))
+        .UseStaticFiles(
+            StaticFileOptions(
+                FileProvider = new PhysicalFileProvider(staticPath),
+                RequestPath = "/static"
+            )
+        )
         .UseGiraffe(webApp)
