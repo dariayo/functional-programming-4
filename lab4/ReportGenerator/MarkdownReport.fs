@@ -12,7 +12,7 @@ let initializeReportStorage () =
     if not (Directory.Exists(reportDirectory)) then
         Directory.CreateDirectory(reportDirectory)
         |> ignore
-
+    
 let generateMarkdownReport (containerName: string) (logs: LogEntry seq) =
     let metrics = analyzeMetrics logs
     let template = getMarkdownTemplate ()

@@ -13,7 +13,7 @@ let analyzeMetrics (logs: LogEntry seq) =
         (fun acc log ->
             match log.LogLevel with
             | "ERROR" -> { acc with ErrorCount = acc.ErrorCount + 1 }
-            | "WARNING" -> { acc with WarningCount = acc.WarningCount + 1 }
+            | "WARN" -> { acc with WarningCount = acc.WarningCount + 1 }
             | "INFO" -> { acc with InfoCount = acc.InfoCount + 1 }
             | _ -> acc)
         { ErrorCount = 0
