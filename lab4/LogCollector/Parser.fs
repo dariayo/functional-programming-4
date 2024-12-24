@@ -20,17 +20,9 @@ let parseLog (log: string) =
 
     if matchResult.Success then
         Some
-            { Timestamp = DateTime.Now 
-              LogLevel = matchResult.Groups.["level"].Value.ToUpper() 
+            { Timestamp = DateTime.Now
+              LogLevel = matchResult.Groups.["level"].Value.ToUpper()
               Message = matchResult.Groups.["message"].Value
               Source = matchResult.Groups.["source"].Value.Trim() }
     else
         None
-
-
-
-
-let filterErrors (logs: string seq) =
-    logs
-    |> Seq.choose parseLog
-    |> Seq.filter (fun log -> log.LogLevel = "ERROR")

@@ -16,7 +16,6 @@
   <ItemGroup>
     <Compile Include="LogCollector/Collector.fs" />
     <Compile Include="LogCollector/Parser.fs" />
-    <Compile Include="LogCollector/Storage.fs" />
     <Compile Include="LogCollector/MetricsAnalyzer.fs" />
     <Compile Include="ReportGenerator/ReportTemplates.fs" />
     <Compile Include="ReportGenerator/MarkdownReport.fs" />
