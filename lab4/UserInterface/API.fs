@@ -1,12 +1,8 @@
 module UserInterface.API
 
 open Giraffe
-open LogCollector.Parser
-open ReportGenerator.MarkdownReport
 open Microsoft.AspNetCore.Http
-open System
 open System.IO
-open System.Threading.Tasks
 open System.Diagnostics
 
 type ApiResponse<'T> =
@@ -103,8 +99,66 @@ let getReportContentHandler (reportName: string) (next: HttpFunc) (ctx: HttpCont
             return! json errorResponse next ctx
     }
 
+let runReportHandler (next: HttpFunc) (ctx: HttpContext) =
+    task {
+        try
+            let! body = ctx.ReadBodyFromRequestAsync()
+
+            let containerName =
+                match System
+                          .Text
+                          .Json
+                          .JsonDocument
+                          .Parse(body)
+                          .RootElement.TryGetProperty("containerName")
+                    with
+                | true, value -> value.GetString()
+                | false, _ -> null
+
+
+            let scriptPath = "./scripts/report.sh"
+
+            let process = new Process()
+            process.StartInfo.FileName <- "bash"
+            process.StartInfo.Arguments <- $"{scriptPath} {containerName}"
+            process.StartInfo.RedirectStandardOutput <- true
+            process.StartInfo.RedirectStandardError <- true
+            process.StartInfo.UseShellExecute <- false
+            process.StartInfo.CreateNoWindow <- true
+
+            process.Start() |> ignore
+            process.WaitForExit()
+
+            let output = process.StandardOutput.ReadToEnd()
+            let error = process.StandardError.ReadToEnd()
+
+            if process.ExitCode = 0 then
+                let successResponse =
+                    { Success = true
+                      ErrorMessage = None
+                      Data = output }
+
+                return! json successResponse next ctx
+            else
+                let errorResponse =
+                    { Success = false
+                      ErrorMessage = Some error
+                      Data = null }
+
+                return! json errorResponse next ctx
+        with
+        | ex ->
+            let errorResponse =
+                { Success = false
+                  ErrorMessage = Some ex.Message
+                  Data = null }
+
+            return! json errorResponse next ctx
+    }
+
 let apiRoutes () =
     choose [ route "/logs" >=> getLogsHandler
              route "/reports" >=> getReportsHandler
              routef "/reports/%s" getReportContentHandler
-             routef "/logs/%s" getLogContentHandler ]
+             routef "/logs/%s" getLogContentHandler
+             POST >=> route "/runReport" >=> runReportHandler ]

@@ -2,8 +2,6 @@ module UserInterface.WebApp
 
 open Giraffe
 open Microsoft.AspNetCore.Builder
-open Microsoft.Extensions.DependencyInjection
-open Microsoft.Extensions.Hosting
 open System.IO
 open Microsoft.Extensions.FileProviders
 open UserInterface.API
@@ -13,6 +11,7 @@ let webApp =
              >=> text "Welcome to the Log Collector Dashboard!"
              route "/logs" >=> htmlFile "Static/html/logs.html"
              route "/reports" >=> htmlFile "Static/html/reports.html"
+             route "/run-report" >=> htmlFile "Static/html/index.html" 
              subRoute "/api" (apiRoutes ()) ]
 
 let configureServices (builder: WebApplicationBuilder) =

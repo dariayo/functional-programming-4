@@ -14,11 +14,9 @@ REPORTS_DIR="./reports"
 mkdir -p $LOGS_DIR
 mkdir -p $REPORTS_DIR
 
-# Скачиваем логи контейнера
 LOG_FILE="$LOGS_DIR/$CONTAINER_NAME.log"
 docker logs $CONTAINER_NAME > $LOG_FILE
 
-# Запуск F# приложения для генерации отчета
 dotnet run --project ./lab4.fsproj "$CONTAINER_NAME" "$LOG_FILE" "$REPORTS_DIR"
 
 if [ $? -eq 0 ]; then

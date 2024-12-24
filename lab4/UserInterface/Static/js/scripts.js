@@ -1,37 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // const form = document.getElementById('containerForm');
-    // const resultDiv = document.getElementById('result');
-    // const outputDiv = document.getElementById('output');
 
-    // form.addEventListener('submit', function (event) {
-    //     event.preventDefault(); // Останавливаем стандартное поведение формы
-
-    //     const containerName = document.getElementById('containerName').value;
-
-    //     // Очистить предыдущий результат
-    //     outputDiv.textContent = 'Executing...';
-
-    //     // Отправка запроса на сервер
-    //     fetch('/api/run-report', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ containerName: containerName }),
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.success) {
-    //             outputDiv.textContent = data.output; // Показать результат
-    //         } else {
-    //             outputDiv.textContent = `Error: ${data.errorMessage}`;
-    //         }
-    //     })
-    //     .catch(error => {
-    //         outputDiv.textContent = `Error: ${error.message}`;
-    //     });
-    // });
-    // Fetch logs
     fetch('/api/logs')
         .then(response => response.json())
         .then(data => {
@@ -42,8 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <ul>
                         ${data.data.map(log => `<li><a href="#" class="log-link" data-log="${log}">${log}</a></li>`).join('')}
                     </ul>`;
-                
-                // Add click event listeners to the log links
+
                 const logLinks = document.querySelectorAll('.log-link');
                 logLinks.forEach(link => {
                     link.addEventListener('click', function (event) {
@@ -57,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-    // Function to fetch and display the content of the log
     function fetchLogContent(logName) {
         fetch(`/api/logs/${logName}`)
             .then(response => response.json())
@@ -74,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Fetch reports
     fetch('/api/reports')
         .then(response => response.json())
         .then(data => {
@@ -84,14 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h2>Available Reports</h2>
                     <ul>
                         ${data.data
-                            .map(
-                                report =>
-                                    `<li><a href="#" class="report-link" data-report="${report}">${report}</a></li>`
-                            )
-                            .join('')}
+                        .map(
+                            report =>
+                                `<li><a href="#" class="report-link" data-report="${report}">${report}</a></li>`
+                        )
+                        .join('')}
                     </ul>`;
-                
-                // Attach event listeners to report links
+
                 document.querySelectorAll('.report-link').forEach(link => {
                     link.addEventListener('click', function (event) {
                         event.preventDefault();
