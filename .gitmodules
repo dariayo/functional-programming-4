@@ -1,3 +1,6 @@
 [submodule "lab4/microservices/example"]
 	path = lab4/microservices/example
 	url = https://github.com/dariayo/functional-programming-4
+[submodule "microservices/example"]
+	path = microservices/example
+	url = https://github.com/dariayo/functional-programming-4
