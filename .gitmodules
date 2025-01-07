@@ -1,0 +1,3 @@
+[submodule "lab4/microservices/example"]
+	path = lab4/microservices/example
+	url = https://github.com/dariayo/functional-programming-4
